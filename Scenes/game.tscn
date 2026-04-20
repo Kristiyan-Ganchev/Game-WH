@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://c50vw8kpbwq6j"]
+
+[ext_resource type="Texture2D" uid="uid://8etofuqep2h1" path="res://Scenes/colorRamp.png" id="1_3dryh"]
+[ext_resource type="PackedScene" uid="uid://da4hm3armlk81" path="res://Scenes/player.tscn" id="1_80nbo"]
+[ext_resource type="PackedScene" uid="uid://c3cfr05jvdf74" path="res://Scenes/Enemy.tscn" id="2_e2o6t"]
+[ext_resource type="PackedScene" uid="uid://cgr5ead2dtrme" path="res://Scenes/UI.tscn" id="3_wrm1d"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e2o6t"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_feb5d"]
+sky_material = SubResource("ProceduralSkyMaterial_e2o6t")
+
+[sub_resource type="Environment" id="Environment_fc0e3"]
+background_mode = 2
+sky = SubResource("Sky_feb5d")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wowpa"]
+albedo_texture = ExtResource("1_3dryh")
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3dryh"]
+friction = 0.5
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3dryh"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_3dryh"]
+
+[node name="Node3D" type="Node3D" unique_id=752573625]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=236896070]
+environment = SubResource("Environment_fc0e3")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=372798011]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1916165868]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0005598366, -1.1705887, -0.011706054)
+use_collision = true
+size = Vector3(100, 0.123, 100)
+material = SubResource("StandardMaterial3D_wowpa")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D" unique_id=108196442]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.937122, 0.6871347, -0.425368)
+use_collision = true
+size = Vector3(16.83545, 1.8888906, 98.91516)
+
+[node name="Player" parent="." unique_id=1571807782 instance=ExtResource("1_80nbo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.413467, 0, 0)
+
+[node name="Enemy" parent="." unique_id=294985616 instance=ExtResource("2_e2o6t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6.7079864)
+
+[node name="Enemy2" parent="." unique_id=343083285 instance=ExtResource("2_e2o6t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.543334, -0.04317808, -5.15668)
+
+[node name="Enemy3" parent="." unique_id=1150937830 instance=ExtResource("2_e2o6t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.663683, -0.043177605, -3.8529081)
+
+[node name="Control" parent="." unique_id=288092270 instance=ExtResource("3_wrm1d")]
+mouse_filter = 1
+
+[node name="Interactible" type="RigidBody3D" parent="." unique_id=334068448]
+collision_layer = 5
+mass = 20.0
+physics_material_override = SubResource("PhysicsMaterial_3dryh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactible" unique_id=1861600471]
+shape = SubResource("BoxShape3D_3dryh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactible" unique_id=1174434795]
+mesh = SubResource("BoxMesh_3dryh")

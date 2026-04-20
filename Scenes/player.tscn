@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://da4hm3armlk81"]
+
+[ext_resource type="Script" uid="uid://5esn2lfw4awn" path="res://Scripts/player_controller.gd" id="1_4flbx"]
+[ext_resource type="Script" uid="uid://ck45t1reg6xjx" path="res://Scripts/lock_on.gd" id="2_cvnsp"]
+[ext_resource type="Script" uid="uid://4pjhj6gx83rm" path="res://Scripts/stance.gd" id="3_6t5aa"]
+[ext_resource type="PackedScene" uid="uid://blnkhmhlcd5q4" path="res://Scenes/arms.tscn" id="4_vgqql"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sh265"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_vgqql"]
+radius = 0.2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_fkybt"]
+radius = 0.1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fkybt"]
+size = Vector3(1, 1.4765015, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vgqql"]
+size = Vector3(1, 0.16882324, 1)
+
+[node name="Player" type="CharacterBody3D" unique_id=1571807782]
+collision_mask = 3
+script = ExtResource("1_4flbx")
+
+[node name="Collider" type="CollisionShape3D" parent="." unique_id=344921219]
+shape = SubResource("CapsuleShape3D_sh265")
+
+[node name="Head" type="Node3D" parent="." unique_id=826656896]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1995592, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head" unique_id=166208831]
+
+[node name="RayCast3D" type="ShapeCast3D" parent="Head" unique_id=234826213]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+shape = SubResource("SphereShape3D_vgqql")
+target_position = Vector3(0, 0, 0)
+collision_mask = 4
+debug_shape_custom_color = Color(1, 0, 0, 1)
+
+[node name="Marker3D" type="Marker3D" parent="Head" unique_id=2079161516]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="Hook" type="StaticBody3D" parent="Head/Marker3D" unique_id=951395890]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Head/Marker3D/Hook" unique_id=875889642]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+shape = SubResource("SphereShape3D_fkybt")
+
+[node name="LockOn" type="Node3D" parent="." unique_id=1626559509]
+script = ExtResource("2_cvnsp")
+
+[node name="Stance" type="Node3D" parent="." unique_id=1564061818]
+script = ExtResource("3_6t5aa")
+
+[node name="Arms" parent="." unique_id=768553316 instance=ExtResource("4_vgqql")]
+transform = Transform3D(-0.505, 0, -7.625288e-08, 0, 0.505, 0, 7.625288e-08, 0, -0.505, 0, -0.8642186, 0)
+visible = false
+
+[node name="WallChecker" type="Area3D" parent="." unique_id=540656866]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2330021, -1.030391)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WallChecker" unique_id=1033941012]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.383735, 0)
+shape = SubResource("BoxShape3D_fkybt")
+
+[node name="EdgeChecker" type="Area3D" parent="." unique_id=1148880426]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.56237096, -0.96608233)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdgeChecker" unique_id=644544003]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.41558838, 0)
+shape = SubResource("BoxShape3D_vgqql")
+
+[node name="Timer" type="Timer" parent="." unique_id=103448494]
+one_shot = true
