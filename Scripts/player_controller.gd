@@ -16,7 +16,7 @@ var t_bob = 0.0
 var target_y = 0.0
 
 @onready var head = $Head
-@onready var arms = $Arms
+@onready var arms: Node3D = $Head/Arms
 @onready var edge_checker = $EdgeChecker
 @onready var wall_checker = $WallChecker
 @onready var timer: Timer = $Timer
@@ -31,7 +31,7 @@ var target_pos: Vector3
 var look_rotation : Vector2
 var mouse_captured: bool = false
 var is_grabbing = false
-
+var grabbed_object: Node3D
 
 func rotate_look(rot_input : Vector2):
 	look_rotation.x -= rot_input.y * look_speed
@@ -78,11 +78,19 @@ func _physics_process(delta: float) -> void:
 func handle_grab():
 	if interactable_cast.is_colliding():
 		joint = Generic6DOFJoint3D.new()
+		joint.exclude_nodes_from_collision = false
 		is_grabbing = true
 		grab_point.add_child(joint)
 		joint.node_a = hook.get_path()
 		joint.node_b = interactable_cast.get_collider(0).get_path()
-			
+		grabbed_object = interactable_cast.get_collider(0)
+		
+		joint.set_param_x(Generic6DOFJoint3D.PARAM_LINEAR_LOWER_LIMIT, 0)
+		joint.set_param_x(Generic6DOFJoint3D.PARAM_LINEAR_UPPER_LIMIT, 0)
+
+		joint.set_param_x(Generic6DOFJoint3D.PARAM_LINEAR_SPRING_STIFFNESS, 200.0)
+		joint.set_param_x(Generic6DOFJoint3D.PARAM_LINEAR_SPRING_DAMPING, 15.0)
+		
 		joint.set_flag_x(Generic6DOFJoint3D.FLAG_ENABLE_LINEAR_LIMIT, true)
 		joint.set_flag_y(Generic6DOFJoint3D.FLAG_ENABLE_LINEAR_LIMIT, true)
 		joint.set_flag_z(Generic6DOFJoint3D.FLAG_ENABLE_LINEAR_LIMIT, true)
@@ -92,6 +100,7 @@ func handle_let_go():
 	if joint != null:
 		joint.queue_free()
 		joint = null
+		grabbed_object = null
 	
 func handle_jump():
 	if Input.is_action_just_pressed("jump") and is_on_floor():

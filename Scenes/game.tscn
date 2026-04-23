@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c50vw8kpbwq6j"]
 
-[ext_resource type="Texture2D" uid="uid://8etofuqep2h1" path="res://Scenes/colorRamp.png" id="1_3dryh"]
+[ext_resource type="Texture2D" uid="uid://8etofuqep2h1" path="res://Assets/colorRamp.png" id="1_3dryh"]
 [ext_resource type="PackedScene" uid="uid://da4hm3armlk81" path="res://Scenes/player.tscn" id="1_80nbo"]
 [ext_resource type="PackedScene" uid="uid://c3cfr05jvdf74" path="res://Scenes/Enemy.tscn" id="2_e2o6t"]
 [ext_resource type="PackedScene" uid="uid://cgr5ead2dtrme" path="res://Scenes/UI.tscn" id="3_wrm1d"]
@@ -65,6 +65,7 @@ mouse_filter = 1
 
 [node name="Interactible" type="RigidBody3D" parent="." unique_id=334068448]
 collision_layer = 5
+collision_mask = 7
 mass = 20.0
 physics_material_override = SubResource("PhysicsMaterial_3dryh")
 
